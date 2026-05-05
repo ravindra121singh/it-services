@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NexCore IT Solutions</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #050608;
+    --white: #f4f3ef;
+    --accent: #00e5a0;
+    --accent2: #0055ff;
+    --gray: #8a8f99;
+    --panel: #0d0f14;
+    --border: rgba(255,255,255,0.07);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.4rem 4rem;
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(18px);
+    background: rgba(5,6,8,0.7);
+  }
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.3rem;
+    letter-spacing: -0.02em;
+  }
+  .logo span { color: var(--accent); }
+  nav ul { list-style: none; display: flex; gap: 2.5rem; }
+  nav ul a {
+    text-decoration: none; color: var(--gray);
+    font-family: 'DM Mono', monospace; font-size: 0.78rem;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  nav ul a:hover { color: var(--white); }
+  .nav-cta {
+    background: var(--accent); color: var(--black) !important;
+    padding: 0.55rem 1.3rem; border-radius: 2px;
+    font-weight: 500 !important;
+  }
+  .nav-cta:hover { background: #00ffb3 !important; color: var(--black) !important; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 10rem 4rem 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 70% at 70% 40%, rgba(0,85,255,0.12) 0%, transparent 70%),
+                radial-gradient(ellipse 40% 50% at 30% 80%, rgba(0,229,160,0.07) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .grid-bg {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 80% at 60% 40%, black 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-left { position: relative; z-index: 2; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    font-family: 'DM Mono', monospace; font-size: 0.72rem;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 1.8rem;
+  }
+  .eyebrow::before {
+    content: ''; display: block;
+    width: 28px; height: 1px; background: var(--accent);
+  }
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.8rem, 5vw, 5rem);
+    font-weight: 800;
+    line-height: 1.0;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.5rem;
+  }
+  h1 em {
+    font-style: normal;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255,255,255,0.35);
+  }
+  .hero-desc {
+    color: var(--gray); font-size: 1.05rem;
+    line-height: 1.7; max-width: 460px;
+    margin-bottom: 2.8rem;
+  }
+  .btn-group { display: flex; gap: 1rem; align-items: center; }
+  .btn-primary {
+    background: var(--accent); color: var(--black);
+    padding: 0.9rem 2.2rem; border-radius: 2px;
+    font-family: 'Syne', sans-serif; font-weight: 700;
+    font-size: 0.9rem; letter-spacing: 0.02em;
+    text-decoration: none; border: none; cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    display: inline-block;
+  }
+  .btn-primary:hover { background: #00ffb3; transform: translateY(-2px); }
+  .btn-ghost {
+    color: var(--white); padding: 0.9rem 2.2rem;
+    border: 1px solid var(--border); border-radius: 2px;
+    font-family: 'Syne', sans-serif; font-weight: 700;
+    font-size: 0.9rem; letter-spacing: 0.02em;
+    text-decoration: none; cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    display: inline-block;
+  }
+  .btn-ghost:hover { border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.05); }
+
+  /* Hero right — terminal card */
+  .hero-right {
+    display: flex; justify-content: flex-end;
+    position: relative; z-index: 2;
+  }
+  .terminal {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    width: 100%;
+    max-width: 460px;
+    overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04);
+  }
+  .terminal-bar {
+    background: #181b22;
+    padding: 0.8rem 1rem;
+    display: flex; align-items: center; gap: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot.r { background: #ff5f57; }
+  .dot.y { background: #ffbd2e; }
+  .dot.g { background: #28c840; }
+  .terminal-title {
+    font-family: 'DM Mono', monospace; font-size: 0.7rem;
+    color: var(--gray); margin-left: auto;
+  }
+  .terminal-body {
+    padding: 1.5rem;
+    font-family: 'DM Mono', monospace; font-size: 0.8rem;
+    line-height: 1.9; color: #6b7280;
+  }
+  .t-line { display: flex; gap: 0.8rem; }
+  .t-prompt { color: var(--accent2); }
+  .t-cmd { color: #e2e8f0; }
+  .t-out { color: #4ade80; }
+  .t-out.warn { color: #facc15; }
+  .t-out.info { color: #60a5fa; }
+  .t-cursor {
+    display: inline-block;
+    width: 7px; height: 14px;
+    background: var(--accent);
+    animation: blink 1.1s step-end infinite;
+    vertical-align: middle; margin-left: 2px;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+  /* ── STATS BAR ── */
+  .stats-bar {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    padding: 2.5rem 4rem;
+    background: var(--panel);
+  }
+  .stat { text-align: center; border-right: 1px solid var(--border); }
+  .stat:last-child { border-right: none; }
+  .stat-num {
+    font-family: 'Syne', sans-serif; font-size: 2.5rem;
+    font-weight: 800; color: var(--white);
+    letter-spacing: -0.03em; display: block;
+  }
+  .stat-num span { color: var(--accent); }
+  .stat-label {
+    font-family: 'DM Mono', monospace; font-size: 0.7rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--gray); margin-top: 0.3rem; display: block;
+  }
+
+  /* ── SERVICES ── */
+  section { padding: 7rem 4rem; }
+  .section-tag {
+    font-family: 'DM Mono', monospace; font-size: 0.72rem;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent2);
+    margin-bottom: 1rem; display: block;
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif; font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 800; letter-spacing: -0.03em;
+    margin-bottom: 1.2rem; line-height: 1.1;
+  }
+  .section-sub {
+    color: var(--gray); font-size: 1rem;
+    line-height: 1.7; max-width: 500px;
+    margin-bottom: 3.5rem;
+  }
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+  .service-card {
+    background: var(--black);
+    padding: 2.5rem;
+    transition: background 0.25s;
+    cursor: default;
+  }
+  .service-card:hover { background: var(--panel); }
+  .s-icon {
+    width: 44px; height: 44px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem; margin-bottom: 1.5rem;
+    transition: border-color 0.2s;
+  }
+  .service-card:hover .s-icon { border-color: var(--accent); }
+  .s-title {
+    font-family: 'Syne', sans-serif; font-weight: 700;
+    font-size: 1.05rem; margin-bottom: 0.7rem;
+  }
+  .s-desc { color: var(--gray); font-size: 0.88rem; line-height: 1.65; }
+  .s-tag {
+    display: inline-block; margin-top: 1.2rem;
+    font-family: 'DM Mono', monospace; font-size: 0.68rem;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--accent); border: 1px solid rgba(0,229,160,0.25);
+    padding: 0.2rem 0.6rem; border-radius: 2px;
+  }
+
+  /* ── WHY US ── */
+  .why-section {
+    background: var(--panel);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .why-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 6rem; align-items: center;
+  }
+  .why-list { display: flex; flex-direction: column; gap: 0; }
+  .why-item {
+    padding: 1.8rem 0;
+    border-bottom: 1px solid var(--border);
+    display: flex; gap: 1.5rem; align-items: flex-start;
+  }
+  .why-item:first-child { border-top: 1px solid var(--border); }
+  .why-num {
+    font-family: 'DM Mono', monospace; font-size: 0.75rem;
+    color: var(--accent2); letter-spacing: 0.05em;
+    margin-top: 3px; flex-shrink: 0;
+  }
+  .why-text h4 {
+    font-family: 'Syne', sans-serif; font-weight: 700;
+    font-size: 1rem; margin-bottom: 0.4rem;
+  }
+  .why-text p { color: var(--gray); font-size: 0.88rem; line-height: 1.6; }
+
+  .why-right {
+    position: relative;
+    background: var(--black);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 2.5rem;
+    overflow: hidden;
+  }
+  .why-right::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--accent2), var(--accent));
+  }
+  .uptime-label {
+    font-family: 'DM Mono', monospace; font-size: 0.72rem;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray);
+    margin-bottom: 0.5rem; display: block;
+  }
+  .uptime-val {
+    font-family: 'Syne', sans-serif; font-size: 4rem;
+    font-weight: 800; color: var(--accent);
+    letter-spacing: -0.04em; line-height: 1;
+    margin-bottom: 0.3rem;
+  }
+  .uptime-sub { color: var(--gray); font-size: 0.82rem; margin-bottom: 2rem; }
+  .bar-chart { display: flex; flex-direction: column; gap: 0.9rem; margin-top: 1.5rem; }
+  .bar-row { display: flex; align-items: center; gap: 1rem; }
+  .bar-name { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--gray); width: 90px; flex-shrink: 0; }
+  .bar-track { flex: 1; height: 4px; background: rgba(255,255,255,0.07); border-radius: 2px; }
+  .bar-fill { height: 100%; border-radius: 2px; background: var(--accent); }
+  .bar-pct { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: var(--white); width: 38px; text-align: right; }
+
+  /* ── PROCESS ── */
+  .process-steps {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 0; position: relative;
+  }
+  .process-steps::before {
+    content: '';
+    position: absolute; top: 36px; left: 5%; right: 5%;
+    height: 1px; background: var(--border);
+  }
+  .step { padding: 0 2rem 0 0; }
+  .step-dot {
+    width: 72px; height: 72px;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'DM Mono', monospace; font-size: 0.72rem;
+    color: var(--accent); background: var(--black);
+    margin-bottom: 1.8rem; position: relative; z-index: 1;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .step:hover .step-dot { border-color: var(--accent); background: rgba(0,229,160,0.05); }
+  .step-title {
+    font-family: 'Syne', sans-serif; font-weight: 700;
+    font-size: 1rem; margin-bottom: 0.6rem;
+  }
+  .step-desc { color: var(--gray); font-size: 0.86rem; line-height: 1.65; }
+
+  /* ── TESTIMONIAL ── */
+  .testi-section {
+    background: var(--panel);
+    border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  }
+  .testi-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1.5px; background: var(--border); border: 1px solid var(--border);
+  }
+  .testi-card {
+    background: var(--black); padding: 2.2rem;
+    transition: background 0.2s;
+  }
+  .testi-card:hover { background: #0a0c10; }
+  .stars { color: var(--accent); font-size: 0.9rem; margin-bottom: 1.2rem; letter-spacing: 2px; }
+  .testi-body {
+    color: #c9cdd6; font-size: 0.9rem; line-height: 1.7;
+    margin-bottom: 1.5rem;
+  }
+  .testi-author { display: flex; align-items: center; gap: 0.9rem; }
+  .avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent2), var(--accent));
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif; font-weight: 800;
+    font-size: 0.75rem; color: white; flex-shrink: 0;
+  }
+  .author-name {
+    font-family: 'Syne', sans-serif; font-weight: 700;
+    font-size: 0.85rem;
+  }
+  .author-role { font-family: 'DM Mono', monospace; font-size: 0.68rem; color: var(--gray); }
+
+  /* ── CTA ── */
+  .cta-section {
+    text-align: center;
+    padding: 8rem 4rem;
+    position: relative; overflow: hidden;
+  }
+  .cta-section::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(0,85,255,0.1) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cta-eyebrow {
+    font-family: 'DM Mono', monospace; font-size: 0.72rem;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 1.5rem; display: block;
+  }
+  .cta-title {
+    font-family: 'Syne', sans-serif; font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-weight: 800; letter-spacing: -0.04em; line-height: 1;
+    margin-bottom: 1.5rem;
+  }
+  .cta-sub {
+    color: var(--gray); max-width: 500px; margin: 0 auto 3rem;
+    font-size: 1rem; line-height: 1.7;
+  }
+  .cta-btns { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 3rem 4rem;
+    display: flex; justify-content: space-between; align-items: center;
+    background: var(--panel);
+  }
+  .foot-logo {
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.1rem;
+  }
+  .foot-logo span { color: var(--accent); }
+  .foot-links { display: flex; gap: 2rem; }
+  .foot-links a {
+    font-family: 'DM Mono', monospace; font-size: 0.7rem;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--gray); text-decoration: none;
+    transition: color 0.2s;
+  }
+  .foot-links a:hover { color: var(--white); }
+  .foot-copy { font-family: 'DM Mono', monospace; font-size: 0.68rem; color: var(--gray); }
+
+  /* ── ANIMATIONS ── */
+  .fade-up {
+    opacity: 0; transform: translateY(24px);
+    animation: fadeUp 0.7s ease forwards;
+  }
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .delay-1 { animation-delay: 0.15s; }
+  .delay-2 { animation-delay: 0.3s; }
+  .delay-3 { animation-delay: 0.45s; }
+  .delay-4 { animation-delay: 0.6s; }
+
+  @media (max-width: 900px) {
+    nav { padding: 1.2rem 2rem; }
+    nav ul { display: none; }
+    .hero { grid-template-columns: 1fr; padding: 8rem 2rem 4rem; gap: 3rem; }
+    .hero-right { justify-content: flex-start; }
+    .stats-bar { grid-template-columns: repeat(2, 1fr); padding: 2rem; gap: 2rem; }
+    .stat { border-right: none; border-bottom: 1px solid var(--border); padding-bottom: 1.5rem; }
+    .stat:nth-child(even) { border-right: none; }
+    section { padding: 5rem 2rem; }
+    .services-grid { grid-template-columns: 1fr; }
+    .why-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .process-steps { grid-template-columns: repeat(2, 1fr); gap: 2.5rem; }
+    .testi-grid { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 1.5rem; text-align: center; padding: 2.5rem 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Nex<span>Core</span></div>
+  <ul>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#about">Why Us</a></li>
+    <li><a href="#contact" class="nav-cta">Get Started</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" style="padding-top: 9rem;">
+  <div class="grid-bg"></div>
+  <div class="hero-left">
+    <div class="eyebrow fade-up">Managed IT Services</div>
+    <h1 class="fade-up delay-1">
+      Infrastructure<br>that <em>never</em><br>sleeps.
+    </h1>
+    <p class="hero-desc fade-up delay-2">
+      End-to-end IT solutions for growing businesses — from cloud architecture and cybersecurity to 24/7 managed support. We keep your systems running so you can focus on what matters.
+    </p>
+    <div class="btn-group fade-up delay-3">
+      <a href="#contact" class="btn-primary">Book a Free Audit</a>
+      <a href="#services" class="btn-ghost">Our Services</a>
+    </div>
+  </div>
+
+  <div class="hero-right fade-up delay-2">
+    <div class="terminal">
+      <div class="terminal-bar">
+        <div class="dot r"></div>
+        <div class="dot y"></div>
+        <div class="dot g"></div>
+        <span class="terminal-title">nexcore-monitor — bash</span>
+      </div>
+      <div class="terminal-body">
+        <div class="t-line"><span class="t-prompt">❯</span><span class="t-cmd">nexcore status --all</span></div>
+        <br>
+        <div class="t-line"><span class="t-out info">● Firewall</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-out">active &amp; synced</span></div>
+        <div class="t-line"><span class="t-out info">● Cloud Backup</span>&nbsp;&nbsp;<span class="t-out">last run: 2m ago</span></div>
+        <div class="t-line"><span class="t-out info">● Network</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-out">99.97% uptime</span></div>
+        <div class="t-line"><span class="t-out info">● Endpoints</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-out">248/248 secured</span></div>
+        <div class="t-line"><span class="t-out info">● Patches</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-out warn">3 pending review</span></div>
+        <br>
+        <div class="t-line"><span class="t-out">✓ All critical systems operational</span></div>
+        <br>
+        <div class="t-line"><span class="t-prompt">❯</span><span class="t-cmd">tail -f /var/log/threats</span></div>
+        <div class="t-line">&nbsp;&nbsp;<span class="t-out warn">12:04:31 blocked — 192.0.2.44</span></div>
+        <div class="t-line">&nbsp;&nbsp;<span class="t-out warn">12:04:38 blocked — 198.51.100.7</span></div>
+        <div class="t-line"><span class="t-prompt">❯</span><span class="t-cursor"></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat">
+    <span class="stat-num">99<span>.97%</span></span>
+    <span class="stat-label">Avg. Uptime SLA</span>
+  </div>
+  <div class="stat">
+    <span class="stat-num">500<span>+</span></span>
+    <span class="stat-label">Clients Served</span>
+  </div>
+  <div class="stat">
+    <span class="stat-num">24<span>/7</span></span>
+    <span class="stat-label">Support Coverage</span>
+  </div>
+  <div class="stat">
+    <span class="stat-num">15<span>min</span></span>
+    <span class="stat-label">Avg. Response Time</span>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section id="services">
+  <span class="section-tag">What We Do</span>
+  <h2 class="section-title">Full-spectrum IT,<br>zero compromise.</h2>
+  <p class="section-sub">Whether you need cloud migration, security hardening, or a reliable help desk — we deliver it with precision and transparency.</p>
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="s-icon">☁️</div>
+      <div class="s-title">Cloud Infrastructure</div>
+      <p class="s-desc">Design, migrate, and optimize your cloud environment on AWS, Azure, or GCP. Scalable, cost-efficient, and built to your exact requirements.</p>
+      <span class="s-tag">AWS · Azure · GCP</span>
+    </div>
+    <div class="service-card">
+      <div class="s-icon">🔐</div>
+      <div class="s-title">Cybersecurity</div>
+      <p class="s-desc">End-to-end protection: threat monitoring, penetration testing, compliance audits, and rapid incident response — all under one roof.</p>
+      <span class="s-tag">SOC 2 · ISO 27001</span>
+    </div>
+    <div class="service-card">
+      <div class="s-icon">🖥️</div>
+      <div class="s-title">Managed Help Desk</div>
+      <p class="s-desc">24/7 remote and on-site support for your entire team. Fast tickets, friendly techs, and SLAs that actually mean something.</p>
+      <span class="s-tag">15-min Response</span>
+    </div>
+    <div class="service-card">
+      <div class="s-icon">🌐</div>
+      <div class="s-title">Network Management</div>
+      <p class="s-desc">Proactive monitoring, bandwidth optimization, and zero-downtime maintenance for your LAN, WAN, and VPN infrastructure.</p>
+      <span class="s-tag">SD-WAN · MPLS</span>
+    </div>
+    <div class="service-card">
+      <div class="s-icon">💾</div>
+      <div class="s-title">Backup & Recovery</div>
+      <p class="s-desc">Automated backups, tested restoration plans, and sub-4-hour RTO guarantees. Your data is always safe and recoverable.</p>
+      <span class="s-tag">RPO &lt; 1hr</span>
+    </div>
+    <div class="service-card">
+      <div class="s-icon">📊</div>
+      <div class="s-title">IT Consulting</div>
+      <p class="s-desc">Strategic advisory on digital transformation, vendor selection, roadmap planning, and technology budget optimization.</p>
+      <span class="s-tag">CTO-as-a-Service</span>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section id="about" class="why-section">
+  <div class="why-grid">
+    <div>
+      <span class="section-tag">Why NexCore</span>
+      <h2 class="section-title">We treat your IT<br>like our own.</h2>
+      <p class="section-sub">No ticket queues. No generic fixes. Just proactive, expert-led IT management tailored to your business.</p>
+      <div class="why-list">
+        <div class="why-item">
+          <span class="why-num">01</span>
+          <div class="why-text">
+            <h4>Proactive Monitoring</h4>
+            <p>We detect and resolve issues before they impact your operations — often before you even know they exist.</p>
+          </div>
+        </div>
+        <div class="why-item">
+          <span class="why-num">02</span>
+          <div class="why-text">
+            <h4>Dedicated Account Engineers</h4>
+            <p>No rotating call centers. You get a named engineer who knows your infrastructure inside and out.</p>
+          </div>
+        </div>
+        <div class="why-item">
+          <span class="why-num">03</span>
+          <div class="why-text">
+            <h4>Transparent Pricing</h4>
+            <p>Flat monthly retainers with no surprise invoices. You know exactly what you're paying and what you're getting.</p>
+          </div>
+        </div>
+        <div class="why-item">
+          <span class="why-num">04</span>
+          <div class="why-text">
+            <h4>Compliance-First Approach</h4>
+            <p>Built-in support for GDPR, HIPAA, ISO 27001, and SOC 2 — we keep you audit-ready, always.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="why-right">
+        <span class="uptime-label">System Uptime — Last 90 Days</span>
+        <div class="uptime-val">99.97<small style="font-size:2rem">%</small></div>
+        <p class="uptime-sub">Across 500+ monitored client environments</p>
+        <div style="border-top: 1px solid var(--border); padding-top: 1.5rem;">
+          <span class="uptime-label" style="margin-bottom: 1rem;">Service Performance Index</span>
+          <div class="bar-chart">
+            <div class="bar-row">
+              <span class="bar-name">Cloud</span>
+              <div class="bar-track"><div class="bar-fill" style="width:99%"></div></div>
+              <span class="bar-pct">99%</span>
+            </div>
+            <div class="bar-row">
+              <span class="bar-name">Security</span>
+              <div class="bar-track"><div class="bar-fill" style="width:100%; background: var(--accent2);"></div></div>
+              <span class="bar-pct">100%</span>
+            </div>
+            <div class="bar-row">
+              <span class="bar-name">Network</span>
+              <div class="bar-track"><div class="bar-fill" style="width:98%"></div></div>
+              <span class="bar-pct">98%</span>
+            </div>
+            <div class="bar-row">
+              <span class="bar-name">Help Desk</span>
+              <div class="bar-track"><div class="bar-fill" style="width:97%; background: #7c6af7;"></div></div>
+              <span class="bar-pct">97%</span>
+            </div>
+            <div class="bar-row">
+              <span class="bar-name">Backup</span>
+              <div class="bar-track"><div class="bar-fill" style="width:100%"></div></div>
+              <span class="bar-pct">100%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <span class="section-tag">How We Work</span>
+  <h2 class="section-title" style="margin-bottom: 4rem;">From audit to<br>always-on, fast.</h2>
+  <div class="process-steps">
+    <div class="step">
+      <div class="step-dot">01</div>
+      <div class="step-title">Discovery Audit</div>
+      <p class="step-desc">We map your current infrastructure, identify risks, and benchmark performance — completely free, no obligation.</p>
+    </div>
+    <div class="step">
+      <div class="step-dot">02</div>
+      <div class="step-title">Custom Roadmap</div>
+      <p class="step-desc">Our engineers design a tailored IT strategy aligned with your budget, timeline, and business objectives.</p>
+    </div>
+    <div class="step">
+      <div class="step-dot">03</div>
+      <div class="step-title">Seamless Onboarding</div>
+      <p class="step-desc">We deploy, configure, and integrate everything within days — no disruption to your day-to-day operations.</p>
+    </div>
+    <div class="step">
+      <div class="step-dot">04</div>
+      <div class="step-title">Continuous Management</div>
+      <p class="step-desc">Ongoing monitoring, quarterly reviews, and proactive optimizations — your IT evolves as your business does.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testi-section">
+  <div style="margin-bottom: 3.5rem;">
+    <span class="section-tag">Client Stories</span>
+    <h2 class="section-title">Trusted by teams<br>that can't afford downtime.</h2>
+  </div>
+  <div class="testi-grid">
+    <div class="testi-card">
+      <div class="stars">★★★★★</div>
+      <p class="testi-body">"NexCore migrated our entire infrastructure to the cloud in under two weeks with zero downtime. Their team felt like a true extension of our own. I can't recommend them enough."</p>
+      <div class="testi-author">
+        <div class="avatar">RS</div>
+        <div>
+          <div class="author-name">Rahul Sharma</div>
+          <div class="author-role">CTO, FinScale Pvt. Ltd.</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="stars">★★★★★</div>
+      <p class="testi-body">"Before NexCore, we had outages every other month. It's been 14 months since our last incident. Their proactive monitoring is genuinely best-in-class."</p>
+      <div class="testi-author">
+        <div class="avatar">PK</div>
+        <div>
+          <div class="author-name">Priya Kapoor</div>
+          <div class="author-role">Head of Ops, MediLink India</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="stars">★★★★★</div>
+      <p class="testi-body">"The transparency alone sets NexCore apart. Monthly reports, clear SLAs, a dedicated engineer who picks up on the first ring. Exactly what a scaling startup needs."</p>
+      <div class="testi-author">
+        <div class="avatar">AM</div>
+        <div>
+          <div class="author-name">Arjun Mehta</div>
+          <div class="author-role">Founder, Stackflow Labs</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="contact" class="cta-section">
+  <span class="cta-eyebrow">Get Started Today</span>
+  <h2 class="cta-title">Ready for IT that<br>just <em style="font-style:normal; color:var(--accent)">works</em>?</h2>
+  <p class="cta-sub">Book a free 30-minute infrastructure audit with one of our senior engineers. No sales pitch — just honest advice.</p>
+  <div class="cta-btns">
+    <a href="mailto:hello@nexcore.io" class="btn-primary">Book Free Audit</a>
+    <a href="tel:+911234567890" class="btn-ghost">+91 12345 67890</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-logo">Nex<span>Core</span></div>
+  <div class="foot-links">
+    <a href="#services">Services</a>
+    <a href="#process">Process</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <div class="foot-copy">© 2026 NexCore IT Solutions</div>
+</footer>
+
+</body>
+</html>
